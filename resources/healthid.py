@@ -41,6 +41,6 @@ class SmartCardResource(Resource):
         print('Sex : %s' % ''.join(chr(i) for i in data[49:50]))
         print('Card Date : %s' % ''.join(chr(i) for i in data[51:57]))
 
-        name = ''.join(chr(i) for i in data[12:18])
+        name = bytes(data[12:18]).decode("big5")
 
-        return make_response(jsonify('123456'), 200)
+        return make_response(jsonify(name), 200)
