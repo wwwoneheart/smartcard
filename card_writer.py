@@ -18,13 +18,17 @@ FF D0 00 XX YY data
 注意 ：所有代码命令均应为Hex格式，数据，存储位置..etc
 """
 
-from blockchain.System import readers
+from smartcard.System import readers
 
 # define the APDUs used in this script
 Select = [ 0xFF, 0xA4, 0x00, 0x00, 0x01, 0x06 ]
-Read = [ 0xFF, 0xB0, 0x00, 0x00, 0x09 ]
+# ReadName = [ 0xFF, 0xB0, 0x00, 0x20, 0x09 ]
+# ReadBirthday = [ 0xFF, 0xB0, 0x00, 0x30, 0x08 ]
+# ReadID = [ 0xFF, 0xB0, 0x00, 0x40, 0x0A ]
 SubmitPassword = [ 0xFF, 0x20, 0x00, 0x00, 0x03, 0xFF, 0xFF, 0xFF ]
-Write = [ 0XFF, 0XD0, 0x00, 0x00, 0x09, 0xA7, 0x02, 0xA7, 0x02, 0xA7, 0x02, 0xA7, 0x02, 0xA7 ]
+WriteName = [ 0XFF, 0XD0, 0x00, 0x20, 0x09, 0xe9, 0x99, 0xb3, 0xe5, 0xb0, 0x8f, 0xe6, 0x98, 0x8e ]
+WriteBirthday = [ 0XFF, 0XD0, 0x00, 0x30, 0x08, 0x31, 0x39, 0x38, 0x30, 0x30, 0x38, 0x32, 0x33 ]
+WriteID = [ 0XFF, 0XD0, 0x00, 0x40, 0x0A, 0x46, 0x31, 0x34, 0x38, 0x37, 0x30, 0x31, 0x31, 0x30, 0x30 ]
 
 # get all the available readers
 r = readers()
@@ -39,11 +43,21 @@ connection.connect()
 data, sw1, sw2 = connection.transmit(Select)
 print("Select Applet: %02X %02X" % (sw1, sw2))
 
-data, sw1, sw2 = connection.transmit(Read)
-print(f"Read Data: {data}")
+# send_data = ''
+# data, sw1, sw2 = connection.transmit(ReadName)
+# send_data += bytes(data).decode('utf8') + ","
+# data, sw1, sw2 = connection.transmit(ReadBirthday)
+# send_data += ''.join(chr(i) for i in data) + ","
+# data, sw1, sw2 = connection.transmit(ReadID)
+# send_data += ''.join(chr(i) for i in data)
+# print(send_data)
 
-# data, sw1, sw2 = connection.transmit(SubmitPassword)
-# print("Submit Password: %02X %02X" % (sw1, sw2))
+data, sw1, sw2 = connection.transmit(SubmitPassword)
+print("Submit Password: %02X %02X" % (sw1, sw2))
 
-# data, sw1, sw2 = connection.transmit(Write)
-# print("Write Data: %02X %02X" % (sw1, sw2))
+data, sw1, sw2 = connection.transmit(WriteName)
+print("Write Data: %02X %02X" % (sw1, sw2))
+data, sw1, sw2 = connection.transmit(WriteBirthday)
+print("Write Data: %02X %02X" % (sw1, sw2))
+data, sw1, sw2 = connection.transmit(WriteID)
+print("Write Data: %02X %02X" % (sw1, sw2))
