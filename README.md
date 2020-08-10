@@ -1,4 +1,4 @@
-# installment
+# Installation
 ### 安裝依賴套件
 ``` 
 $ pip install -r requirements.txt 
